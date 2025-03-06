@@ -1,0 +1,172 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Losev Danil EPI-4-23 lab 1
+    2 00000000         ;This is my first ARM assembly language program
+    3 00000000         
+    4 00000000         
+    5 00000000                 AREA             Lab1Task1, CODE, READONLY
+    6 00000000                 ENTRY
+    7 00000000 E3A02001        MOV              R2, #0x01   ; R2 = 0x00000001
+    8 00000004 E3A03002        MOV              R3, #0x02   ; R3 = 0x00000002
+    9 00000008         ; Other examples to move immediate values
+   10 00000008         
+   11 00000008         ;MOV R5, #0x3210   ;(ERROR:  A1510E: Immediate 0x0000321
+                       0 cannot be represented by 0-255 and a rotation) 
+   12 00000008         ;  Error A1510E: Immediate 0x00003210 cannot be represen
+                       ted by 0-255 and a rotation 
+   13 00000008         ;  occurs because the number 0x3210 cannot be encoded in
+                        ARM's 12-bit format 
+   14 00000008         ;  (8 bits + rotation) and must be loaded via LDR or com
+                       pound instructions.
+   15 00000008 E59F5054        LDR              R5, =0x3210 ; R5 = 0x00003210
+   16 0000000C         
+   17 0000000C         ;MOVT R5, #0x7654   ;(ERROR: A1854E: Unknown opcode 'MOV
+                       T', maybe wrong target CPU?)
+   18 0000000C         ;  MOVT is an instruction only available in ARMv6T2 and 
+                       above 
+   19 0000000C         ;  (e.g. ARM Cortex), but ARM7 does not support it.
+   20 0000000C E59F5054        LDR              R5, =0x7654 ; R5 = 0x00007654
+   21 00000010         
+   22 00000010         ;MOV32 R6, #0x87654321  ;(ERROR: A1356E: Instruction not
+                        supported on targeted CPU)
+   23 00000010         ;  The error occurs because the MOV32 instruction is not
+                        supported by the ARM7 processor, 
+   24 00000010         ;  and a combination of MOV and ORR instructions or an L
+                       DR instruction should be used instead.
+   25 00000010 E59F6054        LDR              R6, =0x87654321 
+                                                            ; R6 = 0x87654321
+   26 00000014         
+   27 00000014         
+   28 00000014         ;LDR R7, #0x87654321  ;(ERROR: A1152E: Unexpected operat
+                       or)
+   29 00000014         ;  The error occurs because the ARM7 processor does not 
+                       support loading large 32-bit values 
+   30 00000014         ;  using the LDR instruction in LDR R7 format, #0x876543
+                       21, and must instead use LDR with 
+   31 00000014         ;  a constant pool ( = ) or split the value into two 16-
+                       bit values using the MOV and ORR instructions.
+   32 00000014 E59F7050        LDR              R7, =0x87654321 
+                                                            ; R7 = 0x87654321
+   33 00000018         
+   34 00000018 E0821003        ADD              R1,R2,R3    ; R1 = 0x00000003
+   35 0000001C         
+   36 0000001C         ;MOV32 R3, #0xFFFFFFFF  ;(ERROR: A1356E: Instruction not
+                        supported on targeted CPU)
+   37 0000001C         ;  The error occurs because the MOV32 instruction is not
+                        supported by the ARM7 processor, 
+   38 0000001C         ;  and a combination of MOV and ORR instructions or an L
+                       DR instruction should be used instead.
+   39 0000001C E3E03000        MOV              R3, #0xFFFFFFFF 
+                                                            ; R3 = 0xFFFFFFFF
+   40 00000020         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   41 00000020 E0921003        ADDS             R1,R2,R3    ; R1 = 0x00000000
+   42 00000024         ; specify Condition Code updates
+   43 00000024         ;  The CPSR flags has been changed
+   44 00000024         ;  "Z" = 1 the result is zero
+   45 00000024         ;  "C" = 1 a transfer occurred
+   46 00000024         
+   47 00000024 E0521003        SUBS             R1,R2,R3    ; R1 = 0x00000002
+   48 00000028         ; specify Condition Code updates
+   49 00000028         ;  The CPSR flags has been changed
+   50 00000028         ;  "Z" = 0 the result is not zero
+   51 00000028         ;  "C" = 0 a transfer not occurred
+   52 00000028         
+   53 00000028 E3E04000        MOV              R4, #0xFFFFFFFF 
+                                                            ; R4 = 0xFFFFFFFF
+   54 0000002C E0821004        ADD              R1,R2,R4    ; R1 = 0x00000000
+   55 00000030         ; How did that operation affect the flags in CPSR?
+   56 00000030         ; Nothing has changed
+   57 00000030         
+   58 00000030 E0921004        ADDS             R1,R2,R4    ; R1 = 0x00000000
+   59 00000034         ; Please specify Condition Code updates
+   60 00000034         ; and now what happened to the flags in CPSR?
+   61 00000034         ;  The CPSR flags have been changed
+   62 00000034         ;  "Z" = 1 the result is zero
+   63 00000034         ;  "C" = 1 a transfer occurred
+   64 00000034         
+   65 00000034 E3A02002        MOV              R2, #0x00000002 
+                                                            ; R2 = 0x00000002
+   66 00000038 E0921004        ADDS             R1,R2,R4    ; R1 = 0x00000001
+   67 0000003C         ; again, what happened to the flags?
+   68 0000003C         ;  The flag of CPSR has been changed: "Z" = 0 the result
+                        is not zero
+   69 0000003C         
+   70 0000003C E3A02001        MOV              R2, #0x00000001 
+                                                            ; R2 = 0x00000001
+   71 00000040 E3A03002        MOV              R3, #0x00000002 
+                                                            ; R3 = 0x00000002
+   72 00000044 E0921003        ADDS             R1,R2,R3    ; R1 = 0x00000003
+   73 00000048         ;  The flag of CPSR has been changed: "C" = 0  a transfe
+                       r not occurred
+   74 00000048         
+   75 00000048         ; Add some small numbers again
+   76 00000048         ; and check the flags again
+   77 00000048         
+   78 00000048 E3A02003        MOV              R2, #0x00000003 
+                                                            ; R4 = 0x00000003
+   79 0000004C E3A03004        MOV              R3, #0x00000004 
+                                                            ; R3 = 0x00000004
+   80 00000050 E0921003        ADDS             R1,R2,R3    ; R1 = 0x00000007
+   81 00000054         
+   82 00000054         ; Add numbers that will create overflow
+   83 00000054 E3E02102        MOV              R2, #0x7FFFFFFF 
+                                                            ; R2 = 0x7FFFFFFF
+   84 00000058 E3E03102        MOV              R3, #0x7FFFFFFF 
+                                                            ; R3 = 0x7FFFFFFF
+   85 0000005C E0921003        ADDS             R1,R2,R3    ; R1 = 0xFFFFFFFE
+   86 00000060         ; Check the flags in CPSR?
+   87 00000060         ;  The CPSR flags have been changed
+   88 00000060         ; "N" = 1 the result is negative
+   89 00000060         ; "V" = 1 an overflow occurred
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   90 00000060         
+   91 00000060 EAFFFFFE 
+                       STOP    B                STOP
+   92 00000064                 END                          ; End of the progra
+                                                            m
+              00003210 
+              00007654 
+              87654321 
+Command Line: --debug --xref --diag_suppress=9931 --bi --apcs=interwork --depen
+d=.\objects\lab1.d -o.\objects\lab1.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\AR
+M\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA
+ 529" --list=.\listings\lab1.lst lab1.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Lab1Task1 00000000
+
+Symbol: Lab1Task1
+   Definitions
+      At line 5 in file lab1.s
+   Uses
+      None
+Comment: Lab1Task1 unused
+STOP 00000060
+
+Symbol: STOP
+   Definitions
+      At line 91 in file lab1.s
+   Uses
+      At line 91 in file lab1.s
+Comment: STOP used once
+2 symbols
+336 symbols in table
