@@ -19,9 +19,9 @@ LOOP
 	BL CHECK_FOR_VOWEL
 	MOV LR, R4
 	
-	;MOV R4, LR
-	;BL CHECK_FOR_SIGNS
-	;MOV LR, R4
+	MOV R4, LR
+	BL CHECK_FOR_SIGNS
+	MOV LR, R4
 	
 	ADD R2, R2, #1
 	
@@ -31,16 +31,16 @@ END_LOOP
 	BX LR
 
 
-;CHECK_FOR_SIGNS
-;	CMP R3, #' '
-;    BEQ IS_SIGN
-;    CMP R3, #'!'
-;    BEQ IS_SIGN
-;	BX LR
-;	
-;IS_SIGN
-;	MOV LR, R4
-;	B LOOP
+CHECK_FOR_SIGNS
+	CMP R3, #' '
+    BEQ IS_SIGN
+    CMP R3, #'!'
+    BEQ IS_SIGN
+	BX LR
+	
+IS_SIGN
+	MOV LR, R4
+	B LOOP
 	
 CHECK_FOR_VOWEL
 	
@@ -54,6 +54,8 @@ CHECK_FOR_VOWEL
     BEQ IS_VOWEL
     CMP R3, #'U'
     BEQ IS_VOWEL
+	CMP R3, #'Y'
+    BEQ IS_VOWEL
     CMP R3, #'a'
     BEQ IS_VOWEL
     CMP R3, #'e'
@@ -63,6 +65,8 @@ CHECK_FOR_VOWEL
     CMP R3, #'o'
     BEQ IS_VOWEL
     CMP R3, #'u'
+    BEQ IS_VOWEL
+	CMP R3, #'y'
     BEQ IS_VOWEL
 	
 	BX LR

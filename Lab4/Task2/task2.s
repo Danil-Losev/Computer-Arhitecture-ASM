@@ -1,0 +1,58 @@
+	AREA MYCODE, CODE, READONLY
+	ENTRY
+	LDR R1, POINTER
+	LDR R2, N
+	
+	LDR R3, [R1] ; min 
+	LDR R4, [R1] ; max
+	
+	BL LOOP
+	
+	LDR R6, MaxP
+	STR R4, [R6]
+	
+	LDR R6, MinP
+	STR R3, [R6]
+	
+	B STOP
+	
+LOOP
+	LDR R5, [R1], #4
+	
+	CMP R5, R3
+	BGT SAVE_MAX
+
+	CMP R5, R3
+	BLT SAVE_MIN
+	
+	SUBS R2, R2, #1
+	BGT LOOP
+	
+	BX LR
+	
+
+SAVE_MAX
+	MOV R4, R5
+	SUBS R2, R2, #1
+	BGT LOOP
+	
+	BX LR
+SAVE_MIN
+	MOV R3, R5
+	SUBS R2, R2, #1
+	BGT LOOP
+	
+	BX LR
+
+STOP B STOP
+
+	AREA MYCODE, CODE, READWRITE
+Max 	DCD 	0
+MaxP 	DCD 	Max
+Min 	DCD 	0
+MinP 	DCD 	Min
+N 		DCD 	12
+NUM1 	DCD 	3, -7, 2, -2, 10, 20, 30, 15, 32, 8, 64, 66
+POINTER DCD 	NUM1
+
+	END
