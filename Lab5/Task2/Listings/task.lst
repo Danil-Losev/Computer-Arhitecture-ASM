@@ -1,0 +1,85 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             TASK, CODE, READONLY
+    2 00000000                 ENTRY
+    3 00000000         
+    4 00000000         START
+    5 00000000 E3A01005        MOV              R1, #5
+    6 00000004 E3A00001        MOV              R0, #1
+    7 00000008 EB000000        BL               FACTORIAL_LOOP
+    8 0000000C EA000008        B                STOP
+    9 00000010         
+   10 00000010         FACTORIAL_LOOP
+   11 00000010 E1A0400E        MOV              R4, LR
+   12 00000014 E3510001        CMP              R1, #1
+   13 00000018 DA000003        BLE              FACTORIAL_END
+   14 0000001C E1A02000        MOV              R2, R0
+   15 00000020 E0000192        MUL              R0, R2, R1
+   16 00000024 E2411001        SUB              R1, R1, #1
+   17 00000028 EAFFFFF8        B                FACTORIAL_LOOP
+   18 0000002C         
+   19 0000002C         FACTORIAL_END
+   20 0000002C E1A0E004        MOV              LR , R4
+   21 00000030 E12FFF1E        BX               LR
+   22 00000034         
+   23 00000034 EAFFFFFE 
+                       STOP    B                STOP
+   24 00000038                 END
+Command Line: --debug --xref --diag_suppress=9931 --bi --apcs=interwork --depen
+d=.\objects\task.d -o.\objects\task.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\AR
+M\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA
+ 529" --list=.\listings\task.lst task.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+FACTORIAL_END 0000002C
+
+Symbol: FACTORIAL_END
+   Definitions
+      At line 19 in file task.s
+   Uses
+      At line 13 in file task.s
+Comment: FACTORIAL_END used once
+FACTORIAL_LOOP 00000010
+
+Symbol: FACTORIAL_LOOP
+   Definitions
+      At line 10 in file task.s
+   Uses
+      At line 7 in file task.s
+      At line 17 in file task.s
+
+START 00000000
+
+Symbol: START
+   Definitions
+      At line 4 in file task.s
+   Uses
+      None
+Comment: START unused
+STOP 00000034
+
+Symbol: STOP
+   Definitions
+      At line 23 in file task.s
+   Uses
+      At line 8 in file task.s
+      At line 23 in file task.s
+
+TASK 00000000
+
+Symbol: TASK
+   Definitions
+      At line 1 in file task.s
+   Uses
+      None
+Comment: TASK unused
+5 symbols
+337 symbols in table
